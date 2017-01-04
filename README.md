@@ -1,8 +1,8 @@
 # LightwaveLink
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/lightwave_link`. To experiment with that code, run `bin/console` for an interactive prompt.
+The LightwaveLink allows you to control your devices which are connected using the LightwaveRF Link box.
 
-TODO: Delete this and the text above, and describe your gem
+It deals with the communications to the box and you can then do the clever things.
 
 ## Installation
 
@@ -22,7 +22,7 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+
 
 ## Development
 
@@ -32,7 +32,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/lightwave_link.
+Bug reports and pull requests are welcome on GitHub at https://github.com/pilkinjd/lightwave_link.
 
 
 ## License
