@@ -6,6 +6,14 @@ require 'timeout'
 module LightwaveLink
   class Api
     TIMEOUT=5
+    DEBUG=false
+
+    def self.connect
+      client = LightwaveLink::Api.new
+      client.connect_client
+      yield client
+      client.close
+    end
 
     def initialize
       BasicSocket.do_not_reverse_lookup = true
@@ -14,13 +22,11 @@ module LightwaveLink
       @server_socket = UDPSocket.new
     end
 
-    def connect
+    def connect_client
       @client_socket.connect("<broadcast>", 9760)
       @client_socket.setsockopt(Socket::SOL_SOCKET, Socket::SO_BROADCAST, true)
       my_ip = Socket::getaddrinfo(Socket.gethostname,"echo",Socket::AF_INET)[0][3]
       @server_socket.bind(my_ip, 9761)
-      yield self
-      close
     end
 
     def send_and_wait_for message
@@ -28,18 +34,24 @@ module LightwaveLink
       wait_for_response
     end
 
+    def close
+      @client_socket.close
+      @server_socket.close
+    end
+
     private
 
     def send_out message
       sending = "#{next_sequence!},#{message}"
       @client_socket.send sending, 0
-      puts "Sent: #{sending}"
+      # puts "Sent: #{sending}"
     end
 
     def wait_for_response
       begin
         Timeout::timeout(TIMEOUT) do
-          get_reponses
+          responses = get_reponses
+          responses.first if responses
         end
       rescue Timeout::Error
       end
@@ -49,16 +61,11 @@ module LightwaveLink
       responses = []
       while(true) do
         this_response = @server_socket.recvfrom( 1024 )
-        puts this_response.inspect
+        # puts this_response.inspect
 
         responses << LightwaveLink::Response.new(this_response)
         return responses if responses.last.message.start_with?("#{@sn},")
       end
-    end
-
-    def close
-      @client_socket.close
-      @server_socket.close
     end
 
     def next_sequence!
