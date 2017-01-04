@@ -11,7 +11,7 @@ describe LightwaveLink::Response do
   context 'simple OK response' do
     it 'extracts the transaction number' do
       response = LightwaveLink::Response.new(["234,OK\r\n", ['server_ip','port','something','something_else']])
-      expected = {trans: 234, status: "OK"}
+      expected = {trans: 234, fn: "OK"}
       expect(response.item).to match expected
     end
   end

@@ -18,7 +18,7 @@ module LightwaveLink
         Hash[elements.map{ |k, v| [k.to_sym, v] }]
       else
         elements = @message.split(',')
-        {trans: elements[0].to_i, status: elements[1] }
+        {trans: elements[0].to_i, fn: elements[1] }
       end
     end
   end
